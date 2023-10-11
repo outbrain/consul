@@ -239,7 +239,7 @@ func TestHealthChecksInState_DistanceSort(t *testing.T) {
 		if err != nil {
 			r.Fatalf("err: %v", err)
 		}
-		assertIndex(t, resp)
+		assertIndex(r, resp)
 		nodes = obj.(structs.HealthChecks)
 		if len(nodes) != 2 {
 			r.Fatalf("bad: %v", nodes)
@@ -592,7 +592,7 @@ func TestHealthServiceChecks_DistanceSort(t *testing.T) {
 		if err != nil {
 			r.Fatalf("err: %v", err)
 		}
-		assertIndex(t, resp)
+		assertIndex(r, resp)
 		nodes = obj.(structs.HealthChecks)
 		if len(nodes) != 2 {
 			r.Fatalf("bad: %v", obj)
@@ -1350,7 +1350,7 @@ func TestHealthServiceNodes_DistanceSort(t *testing.T) {
 		if err != nil {
 			r.Fatalf("err: %v", err)
 		}
-		assertIndex(t, resp)
+		assertIndex(r, resp)
 		nodes = obj.(structs.CheckServiceNodes)
 		if len(nodes) != 2 {
 			r.Fatalf("bad: %v", obj)

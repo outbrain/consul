@@ -358,9 +358,9 @@ func testHandleRemoteExec(t *testing.T, command string, expectedSubstring string
 	retry.Run(t, func(r *retry.R) {
 		event := &remoteExecEvent{
 			Prefix:  "_rexec",
-			Session: makeRexecSession(t, a.Agent, ""),
+			Session: makeRexecSession(r, a.Agent, ""),
 		}
-		defer destroySession(t, a.Agent, event.Session, "")
+		defer destroySession(r, a.Agent, event.Session, "")
 
 		spec := &remoteExecSpec{
 			Command: command,
@@ -429,7 +429,7 @@ func TestHandleRemoteExecFailed(t *testing.T) {
 	testHandleRemoteExec(t, "echo failing;exit 2", "failing", "2")
 }
 
-func makeRexecSession(t *testing.T, a *Agent, token string) string {
+func makeRexecSession(t testutil.TestingTB, a *Agent, token string) string {
 	args := structs.SessionRequest{
 		Datacenter: a.config.Datacenter,
 		Op:         structs.SessionCreate,
@@ -448,7 +448,7 @@ func makeRexecSession(t *testing.T, a *Agent, token string) string {
 	return out
 }
 
-func destroySession(t *testing.T, a *Agent, session string, token string) {
+func destroySession(t testutil.TestingTB, a *Agent, session string, token string) {
 	args := structs.SessionRequest{
 		Datacenter: a.config.Datacenter,
 		Op:         structs.SessionDestroy,

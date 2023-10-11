@@ -259,7 +259,7 @@ func WaitForFortioNameWithClient(t *testing.T, r retry.Retryer, urlbase string, 
 // It retries with timeout defaultHTTPTimeout and wait defaultHTTPWait.
 //
 // client must be a custom http.Client
-func FortioNameWithClient(t retry.Failer, urlbase string, name string, reqHost string, client *http.Client) (string, error) {
+func FortioNameWithClient(t retry.TestingTB, urlbase string, name string, reqHost string, client *http.Client) (string, error) {
 	t.Helper()
 	var fortioNameRE = regexp.MustCompile("\nFORTIO_NAME=(.+)\n")
 	var body []byte
