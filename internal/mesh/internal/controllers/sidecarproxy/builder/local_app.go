@@ -18,7 +18,7 @@ func (b *Builder) BuildLocalApp(workload *pbcatalog.Workload, ctp *pbauth.Comput
 	lb := b.addInboundListener(xdscommon.PublicListenerName, workload)
 	lb.buildListener()
 
-	trafficPermissions := buildTrafficPermissions(b.trustDomain, workload, ctp)
+	trafficPermissions := buildTrafficPermissions(b.defaultAllow, b.trustDomain, workload, ctp)
 
 	// Go through workload ports and add the routers, clusters, endpoints, and TLS.
 	// Note that the order of ports is non-deterministic here but the xds generation
@@ -34,9 +34,11 @@ func (b *Builder) BuildLocalApp(workload *pbcatalog.Workload, ctp *pbauth.Comput
 				addInboundTLS()
 
 			b.addLocalAppCluster(clusterName).
-				addLocalAppStaticEndpoints(clusterName, port)
+				addLocalAppStaticEndpoints(clusterName, port.GetPort())
 		}
 	}
+
+	b.buildExposePaths(workload)
 
 	// If there are no inbound ports other than the mesh port, we black-hole all inbound traffic.
 	if !foundInboundNonMeshPorts {
@@ -47,8 +49,15 @@ func (b *Builder) BuildLocalApp(workload *pbcatalog.Workload, ctp *pbauth.Comput
 	return b
 }
 
-func buildTrafficPermissions(trustDomain string, workload *pbcatalog.Workload, computed *pbauth.ComputedTrafficPermissions) map[string]*pbproxystate.TrafficPermissions {
+func buildTrafficPermissions(globalDefaultAllow bool, trustDomain string, workload *pbcatalog.Workload, computed *pbauth.ComputedTrafficPermissions) map[string]*pbproxystate.TrafficPermissions {
 	portsWithProtocol := workload.GetPortsByProtocol()
+	var defaultAllow bool
+	// If the computed traffic permissions don't exist yet, use default deny just to be safe.
+	// When it exists, use default deny unless no traffic permissions exist and default allow
+	// is configured globally.
+	if computed != nil && computed.IsDefault && globalDefaultAllow {
+		defaultAllow = true
+	}
 
 	out := make(map[string]*pbproxystate.TrafficPermissions)
 	portToProtocol := make(map[string]pbcatalog.Protocol)
@@ -61,7 +70,9 @@ func buildTrafficPermissions(trustDomain string, workload *pbcatalog.Workload, c
 		for _, p := range ports {
 			allPorts = append(allPorts, p)
 			portToProtocol[p] = protocol
-			out[p] = &pbproxystate.TrafficPermissions{}
+			out[p] = &pbproxystate.TrafficPermissions{
+				DefaultAllow: defaultAllow,
+			}
 		}
 	}
 
@@ -83,6 +94,10 @@ func buildTrafficPermissions(trustDomain string, workload *pbcatalog.Workload, c
 		drsByPort := destinationRulesByPort(allPorts, p.DestinationRules)
 		principals := makePrincipals(trustDomain, p)
 		for port := range drsByPort {
+			if _, ok := out[port]; !ok {
+				continue
+			}
+
 			out[port].AllowPermissions = append(out[port].AllowPermissions, &pbproxystate.Permission{
 				Principals: principals,
 			})
@@ -328,22 +343,20 @@ func (b *Builder) addBlackHoleCluster() *Builder {
 	return b
 }
 
-func (b *Builder) addLocalAppStaticEndpoints(clusterName string, port *pbcatalog.WorkloadPort) *Builder {
+func (b *Builder) addLocalAppStaticEndpoints(clusterName string, port uint32) {
 	// We're adding endpoints statically as opposed to creating an endpoint ref
 	// because this endpoint is less likely to change as we're not tracking the health.
 	endpoint := &pbproxystate.Endpoint{
 		Address: &pbproxystate.Endpoint_HostPort{
 			HostPort: &pbproxystate.HostPortAddress{
 				Host: "127.0.0.1",
-				Port: port.Port,
+				Port: port,
 			},
 		},
 	}
 	b.proxyStateTemplate.ProxyState.Endpoints[clusterName] = &pbproxystate.Endpoints{
 		Endpoints: []*pbproxystate.Endpoint{endpoint},
 	}
-
-	return b
 }
 
 func (l *ListenerBuilder) addInboundTLS() *ListenerBuilder {

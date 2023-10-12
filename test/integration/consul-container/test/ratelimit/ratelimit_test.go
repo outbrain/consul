@@ -32,6 +32,7 @@ const (
 //     - logs for exceeding
 
 func TestServerRequestRateLimit(t *testing.T) {
+
 	type action struct {
 		function           func(client *api.Client) error
 		rateLimitOperation string

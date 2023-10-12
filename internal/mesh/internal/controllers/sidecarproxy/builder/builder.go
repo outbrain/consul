@@ -58,7 +58,6 @@ func (b *Builder) Build() *pbmesh.ProxyStateTemplate {
 	b.proxyStateTemplate.RequiredTrustBundles[b.id.Tenancy.PeerName] = &pbproxystate.TrustBundleRef{
 		Peer: b.id.Tenancy.PeerName,
 	}
-	b.proxyStateTemplate.ProxyState.TrafficPermissionDefaultAllow = b.defaultAllow
 
 	finalCleanupOfProxyStateTemplate(b.proxyStateTemplate)
 
@@ -90,7 +89,9 @@ func (b *Builder) NewListenerBuilder(l *pbproxystate.Listener) *ListenerBuilder 
 }
 
 func (l *ListenerBuilder) buildListener() {
-	l.builder.proxyStateTemplate.ProxyState.Listeners = append(l.builder.proxyStateTemplate.ProxyState.Listeners, l.listener)
+	if l.listener != nil {
+		l.builder.proxyStateTemplate.ProxyState.Listeners = append(l.builder.proxyStateTemplate.ProxyState.Listeners, l.listener)
+	}
 }
 
 type RouterBuilder struct {
