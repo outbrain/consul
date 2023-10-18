@@ -27,7 +27,7 @@ var (
 
 func WorkloadHealthController() controller.Controller {
 	return controller.ForType(pbcatalog.WorkloadType).
-		WithIndex(pbcatalog.WorkloadType, "node", indexers.WorkloadNodeIndexer()).
+		WithIndex(pbcatalog.WorkloadType, "node", indexers.WorkloadNodeIndex()).
 		WithWatch(pbcatalog.HealthStatusType, controller.MapOwnerFiltered(pbcatalog.WorkloadType)).
 		WithWatch(pbcatalog.NodeType, controller.CacheListMapper(pbcatalog.WorkloadType, "node")).
 		WithReconciler(&workloadHealthReconciler{})

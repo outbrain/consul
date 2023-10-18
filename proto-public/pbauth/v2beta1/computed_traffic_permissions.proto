@@ -4,10 +4,15 @@ package hashicorp.consul.auth.v2beta1;
 
 import "pbauth/v2beta1/traffic_permissions.proto";
 import "pbresource/annotations.proto";
+import "pbresource/resource.proto";
 
 message ComputedTrafficPermissions {
   option (hashicorp.consul.resource.spec) = {scope: SCOPE_NAMESPACE};
 
   repeated Permission allow_permissions = 1;
   repeated Permission deny_permissions = 2;
+
+  // BoundReferences is a slice of references to resources that were used to
+  // compute a workload identities overall permissions
+  repeated hashicorp.consul.resource.Reference bound_references = 3;
 }

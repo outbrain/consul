@@ -900,7 +900,7 @@ func NewServer(config *Config, flat Deps, externalGRPCServer *grpc.Server,
 
 func (s *Server) registerControllers(deps Deps, proxyUpdater ProxyUpdater) error {
 	if stringslice.Contains(deps.Experiments, CatalogResourceExperimentName) {
-		catalog.RegisterControllers(s.controllerManager, catalog.DefaultControllerDependencies())
+		catalog.RegisterControllers(s.controllerManager)
 
 		defaultAllow, err := s.config.ACLResolverSettings.IsDefaultAllow()
 		if err != nil {

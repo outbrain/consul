@@ -9,8 +9,10 @@ import (
 	"github.com/hashicorp/consul/internal/catalog/internal/controllers/failover"
 	"github.com/hashicorp/consul/internal/catalog/internal/controllers/nodehealth"
 	"github.com/hashicorp/consul/internal/catalog/internal/controllers/workloadhealth"
+	"github.com/hashicorp/consul/internal/catalog/internal/indexers"
 	"github.com/hashicorp/consul/internal/catalog/internal/types"
 	"github.com/hashicorp/consul/internal/controller"
+	"github.com/hashicorp/consul/internal/controller/cache"
 	"github.com/hashicorp/consul/internal/resource"
 	pbcatalog "github.com/hashicorp/consul/proto-public/pbcatalog/v2beta1"
 	"github.com/hashicorp/consul/proto-public/pbresource"
@@ -72,4 +74,8 @@ func SimplifyFailoverPolicy(svc *pbcatalog.Service, failover *pbcatalog.Failover
 // being collected in a multierror.Error.
 func ValidateLocalServiceRefNoSection(ref *pbresource.Reference, wrapErr func(error) error) error {
 	return types.ValidateLocalServiceRefNoSection(ref, wrapErr)
+}
+
+func FailoverDestinationsIndex() *cache.Index {
+	return indexers.FailoverDestinationsIndex()
 }

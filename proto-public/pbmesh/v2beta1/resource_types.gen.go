@@ -9,70 +9,175 @@ import (
 const (
 	GroupName = "mesh"
 	Version   = "v2beta1"
-
-	ComputedRoutesKind            = "ComputedRoutes"
-	DestinationPolicyKind         = "DestinationPolicy"
-	DestinationsKind              = "Destinations"
-	DestinationsConfigurationKind = "DestinationsConfiguration"
-	GRPCRouteKind                 = "GRPCRoute"
-	HTTPRouteKind                 = "HTTPRoute"
-	ProxyConfigurationKind        = "ProxyConfiguration"
-	ProxyStateTemplateKind        = "ProxyStateTemplate"
-	TCPRouteKind                  = "TCPRoute"
 )
 
-var (
-	ComputedRoutesType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         ComputedRoutesKind,
-	}
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.ComputedRoutes
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
 
-	DestinationPolicyType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         DestinationPolicyKind,
-	}
+const ComputedRoutesKind = "ComputedRoutes"
 
-	DestinationsType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         DestinationsKind,
-	}
+var ComputedRoutesType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         ComputedRoutesKind,
+}
 
-	DestinationsConfigurationType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         DestinationsConfigurationKind,
-	}
+func (_ *ComputedRoutes) GetResourceType() *pbresource.Type {
+	return ComputedRoutesType
+}
 
-	GRPCRouteType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         GRPCRouteKind,
-	}
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.DestinationPolicy
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
 
-	HTTPRouteType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         HTTPRouteKind,
-	}
+const DestinationPolicyKind = "DestinationPolicy"
 
-	ProxyConfigurationType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         ProxyConfigurationKind,
-	}
+var DestinationPolicyType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         DestinationPolicyKind,
+}
 
-	ProxyStateTemplateType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         ProxyStateTemplateKind,
-	}
+func (_ *DestinationPolicy) GetResourceType() *pbresource.Type {
+	return DestinationPolicyType
+}
 
-	TCPRouteType = &pbresource.Type{
-		Group:        GroupName,
-		GroupVersion: Version,
-		Kind:         TCPRouteKind,
-	}
-)
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.Destinations
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const DestinationsKind = "Destinations"
+
+var DestinationsType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         DestinationsKind,
+}
+
+func (_ *Destinations) GetResourceType() *pbresource.Type {
+	return DestinationsType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.DestinationsConfiguration
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const DestinationsConfigurationKind = "DestinationsConfiguration"
+
+var DestinationsConfigurationType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         DestinationsConfigurationKind,
+}
+
+func (_ *DestinationsConfiguration) GetResourceType() *pbresource.Type {
+	return DestinationsConfigurationType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.GRPCRoute
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const GRPCRouteKind = "GRPCRoute"
+
+var GRPCRouteType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         GRPCRouteKind,
+}
+
+func (_ *GRPCRoute) GetResourceType() *pbresource.Type {
+	return GRPCRouteType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.HTTPRoute
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const HTTPRouteKind = "HTTPRoute"
+
+var HTTPRouteType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         HTTPRouteKind,
+}
+
+func (_ *HTTPRoute) GetResourceType() *pbresource.Type {
+	return HTTPRouteType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.ProxyConfiguration
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const ProxyConfigurationKind = "ProxyConfiguration"
+
+var ProxyConfigurationType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         ProxyConfigurationKind,
+}
+
+func (_ *ProxyConfiguration) GetResourceType() *pbresource.Type {
+	return ProxyConfigurationType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.ProxyStateTemplate
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const ProxyStateTemplateKind = "ProxyStateTemplate"
+
+var ProxyStateTemplateType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         ProxyStateTemplateKind,
+}
+
+func (_ *ProxyStateTemplate) GetResourceType() *pbresource.Type {
+	return ProxyStateTemplateType
+}
+
+/* ---------------------------------------------------------------------------
+ * hashicorp.consul.mesh.v2beta1.TCPRoute
+ *
+ * This following section contains constants variables and utility methods
+ * for interacting with this kind of resource.
+ * -------------------------------------------------------------------------*/
+
+const TCPRouteKind = "TCPRoute"
+
+var TCPRouteType = &pbresource.Type{
+	Group:        GroupName,
+	GroupVersion: Version,
+	Kind:         TCPRouteKind,
+}
+
+func (_ *TCPRoute) GetResourceType() *pbresource.Type {
+	return TCPRouteType
+}

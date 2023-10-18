@@ -27,7 +27,7 @@ const (
 func ServiceEndpointsController() controller.Controller {
 	return controller.ForType(pbcatalog.ServiceEndpointsType).
 		WithWatch(pbcatalog.ServiceType, controller.ReplaceType(pbcatalog.ServiceEndpointsType)).
-		WithIndex(pbcatalog.ServiceType, "services", indexers.ServiceWorkloadIndexer()).
+		WithIndex(pbcatalog.ServiceType, "services", indexers.ServiceWorkloadIndex()).
 		// We want to rereconcile any ServiceEndpoints when one of the associated workloads
 		// has changed
 		WithWatch(pbcatalog.WorkloadType,

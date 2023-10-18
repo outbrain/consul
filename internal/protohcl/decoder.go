@@ -188,7 +188,7 @@ func (bd bodyDecoder) schema(desc protoreflect.MessageDescriptor) (*hcl.BodySche
 					Type:       bd.namer.NameField(f),
 					LabelNames: []string{"key"},
 				})
-				continue
+				// continue
 			}
 
 			// non-message types or Well Known Message types that need attribute encoding
