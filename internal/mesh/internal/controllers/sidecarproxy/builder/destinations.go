@@ -459,6 +459,7 @@ func (b *ListenerBuilder) addL7Router(routeName string, statPrefix string, proto
 			},
 			StatPrefix:  statPrefix,
 			StaticRoute: false,
+			Protocol:    protocolMap[protocol],
 		},
 	}
 
