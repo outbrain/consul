@@ -65,8 +65,8 @@
         },
         "name": "tcp.api-2.default.dc1.internal.foo.consul"
       },
-      "tcp2.api-1.default.dc1.internal.foo.consul": {
-        "altStatName": "tcp2.api-1.default.dc1.internal.foo.consul",
+      "grpc.api-1.default.dc1.internal.foo.consul": {
+        "altStatName": "grpc.api-1.default.dc1.internal.foo.consul",
         "endpointGroup": {
           "dynamic": {
             "config": {
@@ -75,7 +75,7 @@
             },
             "outboundTls": {
               "alpnProtocols": [
-                "consul~tcp2"
+                "consul~grpc"
               ],
               "outboundMesh": {
                 "identityKey": "test-identity",
@@ -90,10 +90,10 @@
             }
           }
         },
-        "name": "tcp2.api-1.default.dc1.internal.foo.consul"
+        "name": "grpc.api-1.default.dc1.internal.foo.consul"
       },
-      "tcp2.api-2.default.dc1.internal.foo.consul": {
-        "altStatName": "tcp2.api-2.default.dc1.internal.foo.consul",
+      "grpc.api-2.default.dc1.internal.foo.consul": {
+        "altStatName": "grpc.api-2.default.dc1.internal.foo.consul",
         "endpointGroup": {
           "dynamic": {
             "config": {
@@ -102,7 +102,7 @@
             },
             "outboundTls": {
               "alpnProtocols": [
-                "consul~tcp2"
+                "consul~grpc"
               ],
               "outboundMesh": {
                 "identityKey": "test-identity",
@@ -117,7 +117,7 @@
             }
           }
         },
-        "name": "tcp2.api-2.default.dc1.internal.foo.consul"
+        "name": "grpc.api-2.default.dc1.internal.foo.consul"
       }
     },
     "identity": {
@@ -189,19 +189,19 @@
           "host": "1.1.1.1",
           "port": 2345
         },
-        "name": "default/local/default/api-1:tcp2:1.1.1.1:2345",
+        "name": "default/local/default/api-1:grpc:1.1.1.1:2345",
         "routers": [
           {
             "l4": {
-              "statPrefix": "upstream.tcp2.api-1.default.default.dc1",
+              "statPrefix": "upstream.grpc.api-1.default.default.dc1",
               "weightedClusters": {
                 "clusters": [
                   {
-                    "name": "tcp2.api-2.default.dc1.internal.foo.consul",
+                    "name": "grpc.api-2.default.dc1.internal.foo.consul",
                     "weight": 60
                   },
                   {
-                    "name": "tcp2.api-1.default.dc1.internal.foo.consul",
+                    "name": "grpc.api-1.default.dc1.internal.foo.consul",
                     "weight": 40
                   },
                   {
@@ -216,14 +216,14 @@
       },
       {
         "direction": "DIRECTION_OUTBOUND",
-        "name": "default/local/default/api-2:tcp2:/path/to/socket",
+        "name": "default/local/default/api-2:grpc:/path/to/socket",
         "routers": [
           {
             "l4": {
               "cluster": {
-                "name": "tcp2.api-2.default.dc1.internal.foo.consul"
+                "name": "grpc.api-2.default.dc1.internal.foo.consul"
               },
-              "statPrefix": "upstream.tcp2.api-2.default.default.dc1"
+              "statPrefix": "upstream.grpc.api-2.default.default.dc1"
             }
           }
         ],
@@ -267,7 +267,7 @@
       },
       "port": "mesh"
     },
-    "tcp2.api-1.default.dc1.internal.foo.consul": {
+    "grpc.api-1.default.dc1.internal.foo.consul": {
       "id": {
         "name": "api-1",
         "tenancy": {
@@ -283,7 +283,7 @@
       },
       "port": "mesh"
     },
-    "tcp2.api-2.default.dc1.internal.foo.consul": {
+    "grpc.api-2.default.dc1.internal.foo.consul": {
       "id": {
         "name": "api-2",
         "tenancy": {
