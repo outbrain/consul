@@ -5,7 +5,6 @@ package types
 
 import (
 	"fmt"
-
 	"github.com/hashicorp/go-multierror"
 
 	"github.com/hashicorp/consul/acl"
@@ -91,6 +90,11 @@ func ValidateProxyStateTemplate(res *pbresource.Resource) error {
 					Wrapped: fmt.Errorf("cluster name %q does not match map key %q", cluster.Name, name),
 				}))
 			}
+
+			//TODO: Call exports.go proxy of validators.go's protocol validation code, ensure it's set to not-unspecified enum value
+			// (That export also needs to be added, see examples there)
+			//TODO: Add golden test coverage of the changes made to Cluster to include protocol
+			//TODO: Clean up commit message
 
 			wrapGroupErr := func(err error) error {
 				return wrapClusterErr(resource.ErrInvalidField{
