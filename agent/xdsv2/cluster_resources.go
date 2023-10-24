@@ -6,8 +6,6 @@ package xdsv2
 import (
 	"errors"
 	"fmt"
-	pbcatalog "github.com/hashicorp/consul/proto-public/pbcatalog/v2beta1"
-
 	envoy_cluster_v3 "github.com/envoyproxy/go-control-plane/envoy/config/cluster/v3"
 	envoy_core_v3 "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	envoy_aggregate_cluster_v3 "github.com/envoyproxy/go-control-plane/envoy/extensions/clusters/aggregate/v3"
@@ -82,7 +80,7 @@ func (pr *ProxyResources) makeClusters(name string) ([]proto.Message, error) {
 	return clusters, nil
 }
 
-func (pr *ProxyResources) makeEnvoyCluster(name string, protocol pbcatalog.Protocol, eg *pbproxystate.EndpointGroup) (*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyCluster(name string, protocol pbproxystate.Protocol, eg *pbproxystate.EndpointGroup) (*envoy_cluster_v3.Cluster, error) {
 	if eg != nil {
 		switch t := eg.Group.(type) {
 		case *pbproxystate.EndpointGroup_Dynamic:
@@ -104,7 +102,7 @@ func (pr *ProxyResources) makeEnvoyCluster(name string, protocol pbcatalog.Proto
 	return nil, fmt.Errorf("no endpoint group")
 }
 
-func (pr *ProxyResources) makeEnvoyDynamicCluster(name string, protocol pbcatalog.Protocol, dynamic *pbproxystate.DynamicEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyDynamicCluster(name string, protocol pbproxystate.Protocol, dynamic *pbproxystate.DynamicEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
 	cluster := &envoy_cluster_v3.Cluster{
 		Name:                 name,
 		ClusterDiscoveryType: &envoy_cluster_v3.Cluster_Type{Type: envoy_cluster_v3.Cluster_EDS},
@@ -154,7 +152,7 @@ func (pr *ProxyResources) makeEnvoyDynamicCluster(name string, protocol pbcatalo
 
 }
 
-func (pr *ProxyResources) makeEnvoyStaticCluster(name string, protocol pbcatalog.Protocol, static *pbproxystate.StaticEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyStaticCluster(name string, protocol pbproxystate.Protocol, static *pbproxystate.StaticEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
 	cluster := &envoy_cluster_v3.Cluster{
 		Name:                 name,
 		ClusterDiscoveryType: &envoy_cluster_v3.Cluster_Type{Type: envoy_cluster_v3.Cluster_STATIC},
@@ -183,11 +181,11 @@ func (pr *ProxyResources) makeEnvoyStaticCluster(name string, protocol pbcatalog
 	return cluster, nil
 }
 
-func (pr *ProxyResources) makeEnvoyDnsCluster(name string, protocol pbcatalog.Protocol, dns *pbproxystate.DNSEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyDnsCluster(name string, protocol pbproxystate.Protocol, dns *pbproxystate.DNSEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
 	return nil, nil
 }
 
-func (pr *ProxyResources) makeEnvoyPassthroughCluster(name string, protocol pbcatalog.Protocol, passthrough *pbproxystate.PassthroughEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyPassthroughCluster(name string, protocol pbproxystate.Protocol, passthrough *pbproxystate.PassthroughEndpointGroup) (*envoy_cluster_v3.Cluster, error) {
 	cluster := &envoy_cluster_v3.Cluster{
 		Name:                 name,
 		ConnectTimeout:       passthrough.Config.ConnectTimeout,
@@ -208,7 +206,7 @@ func (pr *ProxyResources) makeEnvoyPassthroughCluster(name string, protocol pbca
 	return cluster, nil
 }
 
-func (pr *ProxyResources) makeEnvoyAggregateCluster(name string, protocol pbcatalog.Protocol, fg *pbproxystate.FailoverGroup) ([]*envoy_cluster_v3.Cluster, error) {
+func (pr *ProxyResources) makeEnvoyAggregateCluster(name string, protocol pbproxystate.Protocol, fg *pbproxystate.FailoverGroup) ([]*envoy_cluster_v3.Cluster, error) {
 	var clusters []*envoy_cluster_v3.Cluster
 	if fg != nil {
 		var egNames []string
@@ -251,8 +249,8 @@ func (pr *ProxyResources) makeEnvoyAggregateCluster(name string, protocol pbcata
 	return clusters, nil
 }
 
-func addLocalAppHttpProtocolOptions(protocol pbcatalog.Protocol, c *envoy_cluster_v3.Cluster) error {
-	if !(protocol == pbcatalog.Protocol_PROTOCOL_HTTP2 || protocol == pbcatalog.Protocol_PROTOCOL_GRPC) {
+func addLocalAppHttpProtocolOptions(protocol pbproxystate.Protocol, c *envoy_cluster_v3.Cluster) error {
+	if !(protocol == pbproxystate.Protocol_PROTOCOL_HTTP2 || protocol == pbproxystate.Protocol_PROTOCOL_GRPC) {
 		// do not error.  returning nil means it won't get set.
 		return nil
 	}
@@ -275,8 +273,8 @@ func addLocalAppHttpProtocolOptions(protocol pbcatalog.Protocol, c *envoy_cluste
 	return nil
 }
 
-func addHttpProtocolOptions(protocol pbcatalog.Protocol, c *envoy_cluster_v3.Cluster) error {
-	if !(protocol == pbcatalog.Protocol_PROTOCOL_HTTP2 || protocol == pbcatalog.Protocol_PROTOCOL_GRPC) {
+func addHttpProtocolOptions(protocol pbproxystate.Protocol, c *envoy_cluster_v3.Cluster) error {
+	if !(protocol == pbproxystate.Protocol_PROTOCOL_HTTP2 || protocol == pbproxystate.Protocol_PROTOCOL_GRPC) {
 		// do not error.  returning nil means it won't get set.
 		return nil
 	}

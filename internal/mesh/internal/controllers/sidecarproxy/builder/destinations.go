@@ -5,6 +5,7 @@ package builder
 
 import (
 	"fmt"
+	pbcatalog "github.com/hashicorp/consul/proto-public/pbcatalog/v2beta1"
 	"time"
 
 	"github.com/hashicorp/consul/agent/xds/naming"
@@ -17,7 +18,6 @@ import (
 	"github.com/hashicorp/consul/internal/mesh/internal/types"
 	"github.com/hashicorp/consul/internal/mesh/internal/types/intermediate"
 	"github.com/hashicorp/consul/internal/protoutil"
-	pbcatalog "github.com/hashicorp/consul/proto-public/pbcatalog/v2beta1"
 	pbmesh "github.com/hashicorp/consul/proto-public/pbmesh/v2beta1"
 	"github.com/hashicorp/consul/proto-public/pbmesh/v2beta1/pbproxystate"
 	"github.com/hashicorp/consul/proto-public/pbresource"
@@ -337,7 +337,7 @@ func (b *Builder) buildDestination(
 			}
 		}
 
-		b.addCluster(clusterName, endpointGroups, connectTimeout, effectiveProtocol)
+		b.addCluster(clusterName, endpointGroups, connectTimeout, pbproxystate.Protocol(effectiveProtocol))
 	}
 
 	return b
@@ -359,7 +359,7 @@ func (b *Builder) addNullRouteCluster() *Builder {
 				},
 			},
 		},
-		Protocol: pbcatalog.Protocol_PROTOCOL_TCP,
+		Protocol: pbproxystate.Protocol_PROTOCOL_TCP,
 	}
 
 	b.proxyStateTemplate.ProxyState.Clusters[cluster.Name] = cluster
@@ -403,7 +403,7 @@ func (b *Builder) addL4ClusterForDirect(clusterName string) *Builder {
 				},
 			},
 		},
-		Protocol: pbcatalog.Protocol_PROTOCOL_TCP,
+		Protocol: pbproxystate.Protocol_PROTOCOL_TCP,
 	}
 
 	b.proxyStateTemplate.ProxyState.Clusters[cluster.Name] = cluster
@@ -461,7 +461,7 @@ func (b *ListenerBuilder) addL7Router(routeName string, statPrefix string, proto
 			},
 			StatPrefix:  statPrefix,
 			StaticRoute: false,
-			Protocol:    protocolMap[protocol],
+			Protocol:    protocolMapCatalogToL7[protocol],
 		},
 	}
 
@@ -529,7 +529,7 @@ func (b *Builder) addTransparentProxyOutboundListener(port uint32) *ListenerBuil
 }
 
 func isProtocolHTTPLike(protocol pbcatalog.Protocol) bool {
-	// enumcover:pbcatalog.Protocol
+	// enumcover:pbproxystate.Protocol
 	switch protocol {
 	case pbcatalog.Protocol_PROTOCOL_TCP:
 		return false
@@ -575,7 +575,7 @@ func (b *Builder) addCluster(
 	clusterName string,
 	endpointGroups []*pbproxystate.EndpointGroup,
 	connectTimeout *durationpb.Duration,
-	protocol pbcatalog.Protocol,
+	protocol pbproxystate.Protocol,
 ) {
 	cluster := &pbproxystate.Cluster{
 		Name:        clusterName,

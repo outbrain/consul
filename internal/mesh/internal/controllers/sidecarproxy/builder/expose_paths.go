@@ -32,7 +32,7 @@ func (b *Builder) buildExposePaths(workload *pbcatalog.Workload) {
 			}
 
 			b.addExposePathsRoute(exposePath, clusterName).
-				addLocalAppCluster(clusterName, nil, protocol).
+				addLocalAppCluster(clusterName, nil, pbproxystate.Protocol(protocol)).
 				addLocalAppStaticEndpoints(clusterName, exposePath.LocalPathPort)
 		}
 	}
