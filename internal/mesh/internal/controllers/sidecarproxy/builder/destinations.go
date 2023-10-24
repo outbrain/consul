@@ -337,7 +337,7 @@ func (b *Builder) buildDestination(
 			}
 		}
 
-		b.addCluster(clusterName, endpointGroups, connectTimeout)
+		b.addCluster(clusterName, endpointGroups, connectTimeout, effectiveProtocol)
 	}
 
 	return b
@@ -359,6 +359,7 @@ func (b *Builder) addNullRouteCluster() *Builder {
 				},
 			},
 		},
+		Protocol: pbcatalog.Protocol_PROTOCOL_TCP,
 	}
 
 	b.proxyStateTemplate.ProxyState.Clusters[cluster.Name] = cluster
@@ -402,6 +403,7 @@ func (b *Builder) addL4ClusterForDirect(clusterName string) *Builder {
 				},
 			},
 		},
+		Protocol: pbcatalog.Protocol_PROTOCOL_TCP,
 	}
 
 	b.proxyStateTemplate.ProxyState.Clusters[cluster.Name] = cluster
@@ -573,10 +575,12 @@ func (b *Builder) addCluster(
 	clusterName string,
 	endpointGroups []*pbproxystate.EndpointGroup,
 	connectTimeout *durationpb.Duration,
+	protocol pbcatalog.Protocol,
 ) {
 	cluster := &pbproxystate.Cluster{
 		Name:        clusterName,
 		AltStatName: clusterName,
+		Protocol:    protocol,
 	}
 	switch len(endpointGroups) {
 	case 0:
