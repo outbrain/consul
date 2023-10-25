@@ -1256,7 +1256,8 @@ func makeOutlierDetection(p *structs.PassiveHealthCheck, override *structs.Passi
 // as documented on config entry protos, the valid values are "tcp",
 // "http" and "grpc". Anything else is treated as tcp.
 var protocolMap = map[string]pbproxystate.Protocol{
-	"http": pbproxystate.Protocol_PROTOCOL_HTTP,
-	"grpc": pbproxystate.Protocol_PROTOCOL_GRPC,
-	"tcp":  pbproxystate.Protocol_PROTOCOL_TCP,
+	"http":  pbproxystate.Protocol_PROTOCOL_HTTP,
+	"http2": pbproxystate.Protocol_PROTOCOL_HTTP2,
+	"grpc":  pbproxystate.Protocol_PROTOCOL_GRPC,
+	"tcp":   pbproxystate.Protocol_PROTOCOL_TCP,
 }
