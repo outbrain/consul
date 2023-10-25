@@ -1,8 +1,8 @@
 {
   "proxyState": {
     "clusters": {
-      "grpc.api-app.default.dc1.internal.foo.consul": {
-        "altStatName": "grpc.api-app.default.dc1.internal.foo.consul",
+      "tcp2.api-app.default.dc1.internal.foo.consul": {
+        "altStatName": "tcp2.api-app.default.dc1.internal.foo.consul",
         "endpointGroup": {
           "dynamic": {
             "config": {
@@ -11,7 +11,7 @@
             },
             "outboundTls": {
               "alpnProtocols": [
-                "consul~grpc"
+                "consul~tcp2"
               ],
               "outboundMesh": {
                 "identityKey": "test-identity",
@@ -26,11 +26,11 @@
             }
           }
         },
-        "name": "grpc.api-app.default.dc1.internal.foo.consul",
-        "protocol": "PROTOCOL_GRPC"
+        "name": "tcp2.api-app.default.dc1.internal.foo.consul",
+        "protocol": "PROTOCOL_TCP"
       },
-      "grpc.api-app2.default.dc1.internal.foo.consul": {
-        "altStatName": "grpc.api-app2.default.dc1.internal.foo.consul",
+      "tcp2.api-app2.default.dc1.internal.foo.consul": {
+        "altStatName": "tcp2.api-app2.default.dc1.internal.foo.consul",
         "endpointGroup": {
           "dynamic": {
             "config": {
@@ -39,7 +39,7 @@
             },
             "outboundTls": {
               "alpnProtocols": [
-                "consul~grpc"
+                "consul~tcp2"
               ],
               "outboundMesh": {
                 "identityKey": "test-identity",
@@ -54,8 +54,8 @@
             }
           }
         },
-        "name": "grpc.api-app2.default.dc1.internal.foo.consul",
-        "protocol": "PROTOCOL_GRPC"
+        "name": "tcp2.api-app2.default.dc1.internal.foo.consul",
+        "protocol": "PROTOCOL_TCP"
       },
       "http.api-app.default.dc1.internal.foo.consul": {
         "altStatName": "http.api-app.default.dc1.internal.foo.consul",
@@ -291,12 +291,11 @@
             }
           },
           {
-            "l7": {
-              "protocol": "L7_PROTOCOL_GRPC",
-              "route": {
-                "name": "default/local/default/api-app:grpc"
+            "l4": {
+              "cluster": {
+                "name": "tcp2.api-app.default.dc1.internal.foo.consul"
               },
-              "statPrefix": "upstream."
+              "statPrefix": "upstream.tcp2.api-app.default.default.dc1"
             },
             "match": {
               "destinationPort": 8081,
@@ -309,12 +308,11 @@
             }
           },
           {
-            "l7": {
-              "protocol": "L7_PROTOCOL_GRPC",
-              "route": {
-                "name": "default/local/default/api-app2:grpc"
+            "l4": {
+              "cluster": {
+                "name": "tcp2.api-app2.default.dc1.internal.foo.consul"
               },
-              "statPrefix": "upstream."
+              "statPrefix": "upstream.tcp2.api-app2.default.default.dc1"
             },
             "match": {
               "destinationPort": 8081,
@@ -334,30 +332,6 @@
       }
     ],
     "routes": {
-      "default/local/default/api-app2:grpc": {
-        "virtualHosts": [
-          {
-            "domains": [
-              "*"
-            ],
-            "name": "default/local/default/api-app2:grpc",
-            "routeRules": [
-              {
-                "destination": {
-                  "cluster": {
-                    "name": "grpc.api-app2.default.dc1.internal.foo.consul"
-                  }
-                },
-                "match": {
-                  "pathMatch": {
-                    "prefix": "/"
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      },
       "default/local/default/api-app2:http": {
         "virtualHosts": [
           {
@@ -370,30 +344,6 @@
                 "destination": {
                   "cluster": {
                     "name": "http.api-app2.default.dc1.internal.foo.consul"
-                  }
-                },
-                "match": {
-                  "pathMatch": {
-                    "prefix": "/"
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "default/local/default/api-app:grpc": {
-        "virtualHosts": [
-          {
-            "domains": [
-              "*"
-            ],
-            "name": "default/local/default/api-app:grpc",
-            "routeRules": [
-              {
-                "destination": {
-                  "cluster": {
-                    "name": "grpc.api-app.default.dc1.internal.foo.consul"
                   }
                 },
                 "match": {
@@ -433,7 +383,7 @@
     }
   },
   "requiredEndpoints": {
-    "grpc.api-app.default.dc1.internal.foo.consul": {
+    "tcp2.api-app.default.dc1.internal.foo.consul": {
       "id": {
         "name": "api-app",
         "tenancy": {
@@ -449,7 +399,7 @@
       },
       "port": "mesh"
     },
-    "grpc.api-app2.default.dc1.internal.foo.consul": {
+    "tcp2.api-app2.default.dc1.internal.foo.consul": {
       "id": {
         "name": "api-app2",
         "tenancy": {

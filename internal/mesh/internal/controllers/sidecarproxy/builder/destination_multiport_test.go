@@ -49,9 +49,9 @@ func TestBuildMultiportImplicitDestinations(t *testing.T) {
 				Protocol:    pbcatalog.Protocol_PROTOCOL_TCP,
 			},
 			{
-				TargetPort:  "grpc",
+				TargetPort:  "tcp2",
 				VirtualPort: 8081,
-				Protocol:    pbcatalog.Protocol_PROTOCOL_GRPC,
+				Protocol:    pbcatalog.Protocol_PROTOCOL_TCP,
 			},
 			{
 				TargetPort:  "http",

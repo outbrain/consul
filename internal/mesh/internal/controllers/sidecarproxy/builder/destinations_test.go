@@ -32,8 +32,7 @@ var (
 				},
 				Ports: map[string]*pbcatalog.WorkloadPort{
 					"tcp":  {Port: 7070, Protocol: pbcatalog.Protocol_PROTOCOL_TCP},
-					"tcp2": {Port: 7071, Protocol: pbcatalog.Protocol_PROTOCOL_TCP},
-					"grpc": {Port: 8081, Protocol: pbcatalog.Protocol_PROTOCOL_GRPC},
+					"tcp2": {Port: 8081, Protocol: pbcatalog.Protocol_PROTOCOL_TCP},
 					"http": {Port: 8080, Protocol: pbcatalog.Protocol_PROTOCOL_HTTP},
 					"mesh": {Port: 20000, Protocol: pbcatalog.Protocol_PROTOCOL_MESH},
 				},
@@ -50,13 +49,8 @@ var (
 			},
 			{
 				TargetPort:  "tcp2",
-				VirtualPort: 7071,
-				Protocol:    pbcatalog.Protocol_PROTOCOL_TCP,
-			},
-			{
-				TargetPort:  "grpc",
 				VirtualPort: 8081,
-				Protocol:    pbcatalog.Protocol_PROTOCOL_GRPC,
+				Protocol:    pbcatalog.Protocol_PROTOCOL_TCP,
 			},
 			{
 				TargetPort:  "http",
