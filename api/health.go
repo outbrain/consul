@@ -342,7 +342,9 @@ func (h *Health) service(service string, tags []string, passingOnly bool, q *Que
 		}
 	}
 	if passingOnly {
-		r.params.Set(HealthPassing, "1")
+		r.params.Set(HealthPassing, "true")
+	} else {
+		r.params.Set(HealthPassing, "false")
 	}
 	rtt, resp, err := h.c.doRequest(r)
 	if err != nil {
