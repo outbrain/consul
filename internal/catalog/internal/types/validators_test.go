@@ -378,7 +378,7 @@ func TestValidateProtocol(t *testing.T) {
 	// in order to avoid validator drift.
 	for name, value := range pbcatalog.Protocol_value {
 		t.Run(name, func(t *testing.T) {
-			require.NoError(t, validateProtocol(pbcatalog.Protocol(value)))
+			require.NoError(t, ValidateProtocol(pbcatalog.Protocol(value)))
 		})
 	}
 }

@@ -89,6 +89,13 @@ func TestValidateProxyStateTemplate(t *testing.T) {
 			}),
 			expectErr: `invalid "proxy_state" field: invalid value of key "api-cluster" within clusters: invalid "group" field: missing required field`,
 		},
+		"cluster with invalid protocol": {
+			pst: pstForCluster("api-cluster", &pbproxystate.Cluster{
+				Name:     "api-cluster",
+				Protocol: 100,
+			}),
+			expectErr: `invalid value of key "api-cluster" within clusters: invalid "protocol" field: not a supported enum value: 100`,
+		},
 		// ============== STANDARD ==============
 		"standard cluster with empty map key": {
 			pst: pstForCluster("", clusterForGroups("api-cluster",

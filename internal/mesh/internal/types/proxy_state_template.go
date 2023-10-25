@@ -5,6 +5,8 @@ package types
 
 import (
 	"fmt"
+	"github.com/hashicorp/consul/internal/catalog"
+	pbcatalog "github.com/hashicorp/consul/proto-public/pbcatalog/v2beta1"
 	"github.com/hashicorp/go-multierror"
 
 	"github.com/hashicorp/consul/acl"
@@ -91,9 +93,15 @@ func ValidateProxyStateTemplate(res *pbresource.Resource) error {
 				}))
 			}
 
+			if portErr := catalog.ValidateProtocol(pbcatalog.Protocol(cluster.Protocol)); portErr != nil {
+				merr = multierror.Append(merr, wrapClusterErr(resource.ErrInvalidField{
+					Name:    "protocol",
+					Wrapped: portErr,
+				}))
+			}
+
 			//TODO: Call exports.go proxy of validators.go's protocol validation code, ensure it's set to not-unspecified enum value
 			// (That export also needs to be added, see examples there)
-			//TODO: Add golden test coverage of the changes made to Cluster to include protocol
 			//TODO: Clean up commit message
 
 			wrapGroupErr := func(err error) error {

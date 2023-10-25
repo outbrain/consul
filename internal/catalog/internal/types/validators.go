@@ -151,7 +151,7 @@ func ValidatePortName(name string) error {
 	return nil
 }
 
-func validateProtocol(protocol pbcatalog.Protocol) error {
+func ValidateProtocol(protocol pbcatalog.Protocol) error {
 	switch protocol {
 	case pbcatalog.Protocol_PROTOCOL_UNSPECIFIED,
 		// means pbcatalog.FailoverMode_FAILOVER_MODE_TCP
