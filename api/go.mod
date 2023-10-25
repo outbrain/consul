@@ -1,4 +1,4 @@
-module github.com/hashicorp/consul/api
+module github.com/outbrain/consul/api
 
 go 1.19
 
